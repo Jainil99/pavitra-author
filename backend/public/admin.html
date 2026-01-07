@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — Pavitra</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="container">
+    <h1 class="title">Admin</h1>
+    <p class="tagline">A private writing room for a future author.</p>
+    <a class="link" href="/">← Back</a>
+  </header>
+
+  <main class="container">
+    <section class="card">
+        <div style="display:grid; gap:12px;">
+            <input id="title" class="input" placeholder="Title (e.g. The Quiet Kind of Love)" />
+            <input id="category" class="input" placeholder="Category (Love, Life, Growth...)" />
+            <textarea id="content" class="textarea" placeholder="Write here…"></textarea>
+          
+            <button id="publish" class="btn">Publish</button>
+          
+            <p id="msg" class="muted"></p>
+            <p class="footerNote">Tip: write like you’re speaking to someone you love.</p>
+          </div>
+          
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

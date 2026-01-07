@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pavitra — Author Platform</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <header class="container">
+        <div class="brandRow">
+          <div>
+            <h1 class="title">Pavitra</h1>
+            <p class="tagline">Soft thoughts. Deep feelings. Honest words.</p>
+          </div>
+        </div>
+      
+        <div class="badge">🌸 Author space • Updated whenever she writes</div>
+      </header>
+      
+
+      <main class="container">
+
+        <section class="card" style="margin-bottom:18px;">
+            <div style="display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+                <h2 class="sectionTitle" style="margin:0;">Featured Quote</h2>
+              
+                <div style="display:flex; gap:10px; align-items:center;">
+                  <button id="copyQuoteBtn" class="btn btnSmall btnOutline" type="button">Copy</button>
+                  <button id="downloadCardBtn" class="btn btnSmall btnOutline" type="button">Download card</button>
+                  <button id="newQuoteBtn" class="btn btnSmall" type="button">
+                    New quote ✨
+                    <span class="sparkleLayer" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+          
+            <div id="quoteBox" class="quoteBox">
+              <p id="featuredQuote" class="quoteText"></p>
+              <p id="quoteMeta" class="quoteMeta"></p>
+            </div>
+          </section>
+          
+      
+        <section class="card">
+          <h2 class="sectionTitle">Latest Thoughts</h2>
+          <div id="thoughts" class="thoughts"></div>
+          <p id="empty" class="muted" style="display:none;">No thoughts yet. The first page of her story is waiting ✨</p>
+        </section>
+      
+        <section class="card" style="margin-top:18px;">
+            <h2 class="sectionTitle">Add a Quote</h2>
+          
+            <div style="display:grid; gap:12px;">
+              <textarea id="quoteText" class="textarea" placeholder="Write a short quote…"></textarea>
+              <button id="publishQuote" class="btn">Publish Quote</button>
+              <p id="quoteMsg" class="muted"></p>
+            </div>
+          </section>
+          
+      </main>
+      
+
+  <script src="app.js"></script>
+</body>
+</html>
