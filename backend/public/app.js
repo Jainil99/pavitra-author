@@ -1,4 +1,6 @@
 function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    console.log("✅ app.js loaded", new Date().toISOString());
+
     const words = String(text).split(/\s+/);
     let line = "";
     const lines = [];
@@ -181,41 +183,80 @@ const copyBtn = document.getElementById("copyQuoteBtn");
 if (copyBtn) copyBtn.addEventListener("click", copyFeaturedQuote);
 
 
-async function loadThoughts() {
-    const container = document.getElementById("thoughts");
-    const empty = document.getElementById("empty");
-  
-    try {
-      const res = await fetch("/api/thoughts");
-      const data = await res.json();
-  
-      container.innerHTML = "";
-  
-      if (!Array.isArray(data) || data.length === 0) {
-        empty.style.display = "block";
-        return;
-      }
-  
-      empty.style.display = "none";
-  
-      data.forEach(t => {
-        const div = document.createElement("div");
-        div.className = "thought";
-  
-        const date = new Date(t.createdAt).toLocaleString();
-  
-        div.innerHTML = `
-          <h3 class="thoughtTitle">${escapeHtml(t.title)}</h3>
-          <p class="meta">${escapeHtml(t.category || "General")} • ${date}</p>
-          <p class="content">${escapeHtml(t.content)}</p>
-        `;
-  
-        container.appendChild(div);
-      });
-    } catch (e) {
-      container.innerHTML = `<p class="muted">Error loading thoughts. Check server.</p>`;
-    }
+let ALL_THOUGHTS = [];
+
+function normalizeCat(cat) {
+  return String(cat || "General").trim();
+}
+
+function renderThoughts(list) {
+  const container = document.getElementById("thoughts");
+  const empty = document.getElementById("empty");
+
+  container.innerHTML = "";
+
+  if (!Array.isArray(list) || list.length === 0) {
+    empty.style.display = "block";
+    return;
   }
+  empty.style.display = "none";
+
+  list.forEach(t => {
+    const div = document.createElement("div");
+    div.className = "thought";
+
+    const date = new Date(t.createdAt).toLocaleString();
+    const cat = normalizeCat(t.category);
+
+    div.innerHTML = `
+      <h3 class="thoughtTitle">${escapeHtml(t.title)}</h3>
+      <p class="meta">${escapeHtml(cat)} • ${date}</p>
+      <p class="content">${escapeHtml(t.content)}</p>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+function buildCategoryFilter(thoughts) {
+    console.log("Filter select:", document.getElementById("categoryFilter"));
+  const select = document.getElementById("categoryFilter");
+  if (!select) return;
+
+  const categories = Array.from(
+    new Set(thoughts.map(t => normalizeCat(t.category)))
+  ).sort((a, b) => a.localeCompare(b));
+
+  select.innerHTML =
+    `<option value="all">All</option>` +
+    categories.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+
+  // remove old listeners (simple safe reset)
+  select.onchange = null;
+
+  select.addEventListener("change", () => {
+    const val = select.value;
+    if (val === "all") return renderThoughts(ALL_THOUGHTS);
+    renderThoughts(ALL_THOUGHTS.filter(t => normalizeCat(t.category) === val));
+  });
+}
+
+async function loadThoughts() {
+  const container = document.getElementById("thoughts");
+
+  try {
+    const res = await fetch("/api/thoughts");
+    const data = await res.json();
+
+    ALL_THOUGHTS = Array.isArray(data) ? data : [];
+    console.log("Thoughts loaded:", ALL_THOUGHTS.length);
+    console.log("Categories:", ALL_THOUGHTS.map(t => t.category));
+    buildCategoryFilter(ALL_THOUGHTS);
+    renderThoughts(ALL_THOUGHTS);
+  } catch (e) {
+    container.innerHTML = `<p class="muted">Error loading thoughts. Check server.</p>`;
+  }
+}
   
   function escapeHtml(str) {
     return String(str ?? "")

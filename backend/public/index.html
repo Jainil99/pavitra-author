@@ -12,6 +12,7 @@
           <div>
             <h1 class="title">Pavitra</h1>
             <p class="tagline">Soft thoughts. Deep feelings. Honest words.</p>
+            <a class="link" href="/about.html">About</a>
           </div>
         </div>
       
@@ -43,7 +44,21 @@
           
       
         <section class="card">
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:14px;">
+                <label class="muted" for="categoryFilter">Filter:</label>
+                <select id="categoryFilter" class="input" style="max-width:260px;">
+                  <option value="all">All</option>
+                </select>
+              </div>
+              
           <h2 class="sectionTitle">Latest Thoughts</h2>
+          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:14px;">
+            <label class="muted" for="categoryFilter">Filter:</label>
+            <select id="categoryFilter" class="input" style="max-width:260px;">
+              <option value="all">All</option>
+            </select>
+          </div>
+          
           <div id="thoughts" class="thoughts"></div>
           <p id="empty" class="muted" style="display:none;">No thoughts yet. The first page of her story is waiting ✨</p>
         </section>
