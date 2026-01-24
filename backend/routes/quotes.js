@@ -10,18 +10,17 @@ const protectAdmin = adminAuth();
 // GET all quotes (latest first)
 router.get("/random", async (req, res) => {
     try {
-      // Only choose quotes that actually have text
-      const filter = { text: { $exists: true, $ne: "" } };
-  
-      const count = await Quote.countDocuments(filter);
-      if (count === 0) return res.json({ text: null });
+      const count = await Quote.countDocuments({ text: { $ne: "" } });
+      if (!count) return res.json({ text: null });
   
       const random = Math.floor(Math.random() * count);
-      const quote = await Quote.findOne(filter).skip(random);
+      const quote = await Quote.findOne({ text: { $ne: "" } })
+        .skip(random)
+        .select("text");
   
-      return res.json({ text: quote?.text ?? null });
+      res.json({ text: quote.text });
     } catch (err) {
-      return res.status(500).json({ message: err.message });
+      res.status(500).json({ message: err.message });
     }
   });  
 
